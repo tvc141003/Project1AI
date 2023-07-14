@@ -84,12 +84,27 @@ def convertStringToBaLan(string):
         result = result + frontier.get()
 
     return result
-        
+def subString(str):
+    t = str.split('=')
+    s = ''
+    s = t[0]
+    result = []
+    temp = ''
+    for i in range(len(s)):
+        if s[i] == '+' or s[i] == '-' or s[i] == '*' or s[i] == '(' or s[i] == ')':
+            result.append(temp)
+            temp = ''
+            result.append(s[i])
+        else:
+            temp+=s[i]
+    result.append(temp)
+    result = list(filter(lambda x: x != "", result))
+    return result,t[1]       
 
 if (__name__ == "__main__"):
     string = input("Nhap da thuc: ")
-    arr = string.split('=')
+    arr, result = subString(string)
     print(arr)
-    balan = convertStringToBaLan(string)
+    #balan = convertStringToBaLan(string)
 
-    print(balan)
+    #print(balan)
