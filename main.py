@@ -324,11 +324,72 @@ class CSPSearch():
 
         return "Cutoff"
 
+class BruteForceSearch():
+    def __init__(self, origin = None):
+        converter = VariableValueConverter(origin)
+        variable = converter.convert()
+        
+        converter = InputValueConverter(origin)
+        arr, result = converter.convert()
+        
+        converter = BalanValueConverter(arr)
+        balan = converter.convert()
+        
+        tree = Tree(balan).build()
+
+        self._variable = variable
+        self._leftValue = tree
+        self._rightValue = Node(value = result)
+        self._result = [[item[0], None] for item in variable]
+        self._letters = arr
+        self._letters.append(result)
+
+    def isValid(self):
+        length = len(self._result)
+        # Check all diff digit
+        for i in range(length):
+            for j in range(i):
+                if (self._result[i][1] == self._result[j][1]):
+                    return False
+                
+        # Check first digit diff Zero
+        for i in range(length):
+            item = self._result[i]
+            if (item[1] != 0): continue
+
+            for letter in self._letters:
+                if ('A' <= letter[0] <= 'Z' and letter[0] == item[0]): return False
+
+        # Check correct equation
+        leftValue = self._leftValue.run(self._result)
+        rightValue = self._rightValue.run(self._result)
+        if (leftValue != rightValue): return False
+
+        return True
+
+    def run(self, position = 0):
+        if (position == len(self._result)):
+            if (self.isValid() == True): return self._result
+            return "Cutoff"
+        
+        for i in range(10):
+            self._result[position][1] = i
+            result = self.run(position+1)
+            if (result != "Cutoff"): return self._result
+        
+
+        return "Cutoff"
+
 if (__name__ == "__main__"):
     string = input("Nhap da thuc: ")
     
-    search = CSPSearch(string)
-    search.ArcConsistency()
-    result = search.run(0)
+    cspSearch = CSPSearch(string)
+    cspSearch.ArcConsistency()
+    cspResult = cspSearch.run(0)
+    print(cspResult)
 
-    print(result)
+    bruteForceSearch = BruteForceSearch(string)
+    bruteForceResult = bruteForceSearch.run(0)
+
+
+    print(bruteForceResult)
