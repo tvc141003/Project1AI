@@ -381,15 +381,31 @@ class BruteForceSearch():
         return "Cutoff"
 
 if (__name__ == "__main__"):
-    string = input("Nhap da thuc: ")
+    fileIn = input("Nhap ten file: ")
     
-    cspSearch = CSPSearch(string)
+    data = ''
+    with open(fileIn, 'r') as file:
+        data = file.read()
+        file.close()
+    
+    cspSearch = CSPSearch(data)
     cspSearch.ArcConsistency()
     cspResult = cspSearch.run(0)
-    print(cspResult)
 
-    bruteForceSearch = BruteForceSearch(string)
-    bruteForceResult = bruteForceSearch.run(0)
+    result = ''
+    if (cspResult == "Cutoff"):
+        result = "NO SOLUTION"
+    else:
+        for item in cspResult:
+            result = f'{result}{item[1]}'
+
+    fileOut = fileIn.replace('input', 'output')
+    with open(fileOut, 'w') as file:
+        file.write(result)
+        file.close()
+
+    # bruteForceSearch = BruteForceSearch(data)
+    # bruteForceResult = bruteForceSearch.run(0)
 
 
-    print(bruteForceResult)
+    # print(bruteForceResult)
