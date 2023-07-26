@@ -224,7 +224,7 @@ class AlldiffConstraint(Constraint):
                 # Check all domain in I
                 for k in range(10):
                     if (itemI[k] == False): continue
-                    flag =  False
+                    flag =  False   
 
                     # Each domain in I check any domain in J valid diff domain I
                     for l in range(10):
@@ -278,7 +278,7 @@ class CSPSearch():
         self._constraint = [AlldiffConstraint(variable), DiffZeroConstraint(variable, tree), DiffZeroConstraint(variable, self._rightValue)]
 
     def getLeftValue(self):
-        return self._leftValue
+        return self._leftValuele
 
     def ArcConsistency(self):
         flag = True
